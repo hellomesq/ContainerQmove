@@ -21,6 +21,12 @@ code .
 cd /c/Users/SeuUsuario/NomeDaPasta
 az login
 ```
+#### Banco de dados local para testes 
+```bash
+docker exec -it mysql-local mysql -u root -p
+senha: root123
+CREATE DATABASE qmove;
+```
 #### Criação do Grupo de Recursos no GitBash
 ```bash
 ./build.sh
