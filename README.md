@@ -31,15 +31,15 @@ CREATE DATABASE qmove;
 ```bash
 ./build.sh
 ```
+#### Deploy da aplicação no GitBash
+```bash
+./deploy.sh
+```
 #### Acessar o Banco de Dados pelo CMD
 O banco MySQL está rodando em um container no Azure. Para acessar e verificar o conteúdo das tabelas, use o seguinte comando no terminal:
 ```bash
 docker run -it --rm mysql:8 mysql -h aci-qmove-db.eastus.azurecontainer.io -P 3306 -u root -p
 senha: root123
-```
-#### Deploy da aplicação no GitBash
-```bash
-./deploy.sh
 ```
 #### Acesse a aplicação no navegador
 ```bash
