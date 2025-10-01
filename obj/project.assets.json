@@ -724,6 +724,23 @@
           "buildTransitive/Mono.TextTemplating.targets": {}
         }
       },
+      "MySqlConnector/2.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2"
+        },
+        "compile": {
+          "lib/net9.0/MySqlConnector.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/MySqlConnector.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Oracle.EntityFrameworkCore/9.23.80": {
         "type": "package",
         "dependencies": {
@@ -751,6 +768,23 @@
         },
         "runtime": {
           "lib/net8.0/Oracle.ManagedDataAccess.dll": {}
+        }
+      },
+      "Pomelo.EntityFrameworkCore.MySql/9.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "[9.0.0, 9.0.999]",
+          "MySqlConnector": "2.4.0"
+        },
+        "compile": {
+          "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.dll": {
+            "related": ".xml"
+          }
         }
       },
       "QRCoder/1.6.0": {
@@ -3019,6 +3053,35 @@
         "readme.md"
       ]
     },
+    "MySqlConnector/2.4.0": {
+      "sha512": "78M+gVOjbdZEDIyXQqcA7EYlCGS3tpbUELHvn6638A2w0pkPI625ixnzsa5staAd3N9/xFmPJtkKDYwsXpFi/w==",
+      "type": "package",
+      "path": "mysqlconnector/2.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net462/MySqlConnector.dll",
+        "lib/net462/MySqlConnector.xml",
+        "lib/net471/MySqlConnector.dll",
+        "lib/net471/MySqlConnector.xml",
+        "lib/net48/MySqlConnector.dll",
+        "lib/net48/MySqlConnector.xml",
+        "lib/net6.0/MySqlConnector.dll",
+        "lib/net6.0/MySqlConnector.xml",
+        "lib/net8.0/MySqlConnector.dll",
+        "lib/net8.0/MySqlConnector.xml",
+        "lib/net9.0/MySqlConnector.dll",
+        "lib/net9.0/MySqlConnector.xml",
+        "lib/netstandard2.0/MySqlConnector.dll",
+        "lib/netstandard2.0/MySqlConnector.xml",
+        "lib/netstandard2.1/MySqlConnector.dll",
+        "lib/netstandard2.1/MySqlConnector.xml",
+        "logo.png",
+        "mysqlconnector.2.4.0.nupkg.sha512",
+        "mysqlconnector.nuspec"
+      ]
+    },
     "Oracle.EntityFrameworkCore/9.23.80": {
       "sha512": "NFzCoYs/0fQXZRSqB0v9ZlOVZe84U5MqMgrhcJeyR/0+5FzSe9oBbu87Tz3SaoQWrrMjGGsQHbQD89o0AHUpzQ==",
       "type": "package",
@@ -3051,6 +3114,21 @@
         "oracle.manageddataaccess.core.23.8.0.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "oracle.png"
+      ]
+    },
+    "Pomelo.EntityFrameworkCore.MySql/9.0.0": {
+      "sha512": "cl7S4s6CbJno0LjNxrBHNc2xxmCliR5i40ATPZk/eTywVaAbHCbdc9vbGc3QThvwGjHqrDHT8vY9m1VF/47o0g==",
+      "type": "package",
+      "path": "pomelo.entityframeworkcore.mysql/9.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.dll",
+        "lib/net8.0/Pomelo.EntityFrameworkCore.MySql.xml",
+        "pomelo.entityframeworkcore.mysql.9.0.0.nupkg.sha512",
+        "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
     "QRCoder/1.6.0": {
@@ -3872,6 +3950,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.5",
       "Oracle.EntityFrameworkCore >= 9.23.80",
+      "Pomelo.EntityFrameworkCore.MySql >= 9.0.0",
       "QRCoder >= 1.6.0",
       "Swashbuckle.AspNetCore >= 8.1.1",
       "Swashbuckle.AspNetCore.Annotations >= 9.0.5",
@@ -3884,11 +3963,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\QMove.NET\\MotoMonitoramento.csproj",
+      "projectUniqueName": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj",
       "projectName": "MotoMonitoramento",
-      "projectPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\QMove.NET\\MotoMonitoramento.csproj",
+      "projectPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj",
       "packagesPath": "C:\\Users\\Heloisa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\QMove.NET\\obj\\",
+      "outputPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Heloisa\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3940,6 +4019,10 @@
           "Oracle.EntityFrameworkCore": {
             "target": "Package",
             "version": "[9.23.80, )"
+          },
+          "Pomelo.EntityFrameworkCore.MySql": {
+            "target": "Package",
+            "version": "[9.0.0, )"
           },
           "QRCoder": {
             "target": "Package",

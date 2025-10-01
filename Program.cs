@@ -1,17 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using MotoMonitoramento.Data;
-using Swashbuckle.AspNetCore.Annotations; // ✨ Importante
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona DbContext com pooling
+// Lê variáveis de ambiente
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "3306";
+var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "qmove";
+var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "root";
+var dbPass = Environment.GetEnvironmentVariable("DB_PASS") ?? "root123";
+
+// Monta a connection string MySQL
+var connectionString =
+    $"server={dbHost};port={dbPort};database={dbName};user={dbUser};password={dbPass}";
+
 builder.Services.AddDbContextPool<AppDbContext>(options =>
     options
-        .UseOracle(builder.Configuration.GetConnectionString("OracleConnection"))
-        .EnableSensitiveDataLogging() // útil para debug
+        .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36)))
+        .EnableSensitiveDataLogging()
 );
 
-// Configura CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -22,17 +30,22 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// Configura Swagger com Annotations
 builder.Services.AddSwaggerGen(c =>
 {
-    c.EnableAnnotations(); // permite anotações
+    c.EnableAnnotations();
 });
 
 var app = builder.Build();
 
-// Middleware
+// ⚡ Rodar migrations automaticamente ao iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // Cria banco/tabelas automaticamente
+}
+
 app.UseCors("AllowAll");
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -45,11 +58,9 @@ app.MapGet("/", () => "API QMove funcionando");
 app.UseAuthorization();
 app.MapControllers();
 
-// Configura porta (para deploy)
-var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://*:{port}");
 
-// Ativa Hot Reload em dev
 #if DEBUG
 app.UseDeveloperExceptionPage();
 #endif
