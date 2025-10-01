@@ -29,20 +29,49 @@ ACR_USER=$(az acr credential show -n $ACR_NAME --query "username" -o tsv)
 ACR_PASS=$(az acr credential show -n $ACR_NAME --query "passwords[0].value" -o tsv)
 
 # =========================
-# 3️⃣ Pular criação do MySQL (já existe) e pegar FQDN
+# 3️⃣ Criar container MySQL se não existir
 # =========================
-echo "🔹 Obtendo FQDN do MySQL existente..."
+echo "🔹 Verificando container MySQL..."
+DB_EXISTS=$(az container show --resource-group $RG --name $DB_NAME --query "name" -o tsv 2>/dev/null)
+
+if [ -z "$DB_EXISTS" ]; then
+    echo "⚡ Criando container MySQL..."
+    az container create \
+      --resource-group $RG \
+      --name $DB_NAME \
+      --image $ACR_NAME.azurecr.io/mysql:8 \
+      --registry-login-server $ACR_NAME.azurecr.io \
+      --registry-username $ACR_USER \
+      --registry-password $ACR_PASS \
+      --environment-variables MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD MYSQL_DATABASE=$DB_DATABASE \
+      --cpu 1 \
+      --memory 1 \
+      --ports 3306 \
+      --os-type Linux \
+      --dns-name-label $DB_NAME \
+      --restart-policy Always
+
+    echo "⌛ Aguardando container MySQL iniciar..."
+    sleep 20
+else
+    echo "✅ Container MySQL já existe."
+fi
+
+# =========================
+# 4️⃣ Pegar FQDN do container MySQL
+# =========================
+echo "🔹 Obtendo FQDN do MySQL..."
 DB_FQDN=$(az container show --resource-group $RG --name $DB_NAME --query "ipAddress.fqdn" -o tsv)
 
 if [ -z "$DB_FQDN" ]; then
-    echo "❌ Banco MySQL não encontrado. Rode o container MySQL primeiro."
+    echo "❌ Não foi possível obter o FQDN do MySQL."
     exit 1
 fi
 
-echo "✅ Banco MySQL já rodando em: $DB_FQDN"
+echo "✅ Banco MySQL rodando em: $DB_FQDN"
 
 # =========================
-# 4️⃣ Criar container da aplicação
+# 5️⃣ Criar container da aplicação
 # =========================
 echo "🔹 Criando container da aplicação..."
 az container create \
