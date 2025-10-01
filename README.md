@@ -14,6 +14,12 @@ Este projeto utiliza Azure Container Registry (ACR) e Azure Container Instance (
 ```bash
 git clone https://github.com/hellomesq/ContainerQmove
 cd ContainerQmove
+code .
+```
+#### Execução no Gitbash
+```bash
+cd /c/Users/SeuUsuario/NomeDaPasta
+az login
 ```
 #### Acessar o Banco de Dados
 O banco MySQL está rodando em um container no Azure. Para acessar e verificar o conteúdo das tabelas, use o seguinte comando no terminal:
