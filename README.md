@@ -1,85 +1,37 @@
 
-# QMove.NET
+# QMOVE 
 
-API RESTful para gerenciamento de motos, com funcionalidades completas de CRUD, utilizando ASP.NET Core, banco de dados Oracle via Entity Framework Core, e documentação automática com Swagger.
+Este projeto utiliza Azure Container Registry (ACR) e Azure Container Instance (ACI) para armazenar e executar a aplicação, além de um container MySQL em nuvem para o banco de dados.
 
----
+## Integrantes
 
-## Descrição
+- Hellen Marinho Cordeiro RM 558841
+- Heloisa Alves de Mesquita RM 559145
 
-Este projeto oferece uma API para gerenciar motos distribuídas em diferentes setores, permitindo:
+## Como executar 
 
-- Criar novas motos
-- Consultar todas as motos ou motos filtradas por setor
-- Atualizar informações de uma moto existente
-- Excluir motos
-- Consultar moto por ID
-
-### Tecnologias utilizadas
-
-- ASP.NET Core Web API (Controllers)
-- Entity Framework Core com Oracle Database
-- Swagger para documentação interativa da API
-
----
-
-## Como rodar o projeto
-
-### Pré-requisitos
-
-- [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) (ou superior)
-- Banco de dados Oracle acessível
-- EF Core Tools (opcional, para gerenciar migrations)
-
-### Passos
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seuusuario/MotoMonitoramento.git
-   cd MotoMonitoramento
-   ```
-
-2. Configure a connection string do Oracle no arquivo `appsettings.json`:
-   ```json
-   "ConnectionStrings": {
-     "OracleConnection": "User Id=seu_usuario;Password=sua_senha;Data Source=seu_host:porta/seu_servico"
-   }
-   ```
-
-3. (Opcional) Crie o banco de dados e aplique as migrations:
-   ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
-   ```
-
-4. Execute a aplicação:
-   ```bash
-   dotnet run
-   ```
-
-5. Acesse a documentação Swagger para explorar e testar as rotas:
-   ```
-   http://localhost:<porta>/swagger/index.html
-   ```
-
----
-
-## Endpoints da API
-
-| GET    | `/api/motos`           | Retorna todas as motos           
-| GET    | `/api/motos/por-setor` | Retorna motos filtradas por setor
-| GET    | `/api/motos/{id}`      | Retorna moto pelo ID             
-| POST   | `/api/motos`           | Cria uma nova moto               
-| PUT    | `/api/motos/{id}`      | Atualiza moto pelo ID             
-| DELETE | `/api/motos/{id}`      | Exclui moto pelo ID              
-
-### Exemplo JSON para POST e PUT
-
-```json
-{
-  "placa": "ABC1234",
-  "status": "No patio",
-  "setor": "Disponivel"
-}
+#### Clone o projeto
+```bash
+git clone https://github.com/hellomesq/ContainerQmove
+cd ContainerQmove
 ```
+#### Acessar o Banco de Dados
+O banco MySQL está rodando em um container no Azure. Para acessar e verificar o conteúdo das tabelas, use o seguinte comando no terminal:
+```bash
+docker run -it --rm mysql:8 mysql -h aci-qmove-db.eastus.azurecontainer.io -P 3306 -u root -p
+senha: root123
+```
+#### Criação do Grupo de Recursos
+```bash
+./build.sh
+```
+#### Deploy da aplicação
+```bash
+./deploy.sh
+```
+#### Acesse a aplicação no navegador
+```bash
+http://aci-qmove-api.eastus.azurecontainer.io:8080/swagger/index.html 
+```
+
 
