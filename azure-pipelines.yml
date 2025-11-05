@@ -1,19 +1,62 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  branches:
+    include:
+      - main
+      - master   # dispara CI/CD ao alterar a branch principal
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
+
+variables:
+  RG: 'rgqmove'
+  ACR_NAME: 'acrqmove'
+  APP_NAME: 'aci-qmove-api'
+  DB_NAME: 'aci-qmove-db'
+  LOCATION: 'eastus'
+  IMAGE_NAME: 'qmoveapi:v1'
+
+  # ⚠️ Essas variáveis devem ser protegidas no Azure DevOps (não hardcode!)
+  MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
+  DB_DATABASE: $(DB_DATABASE)
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # ======================
+  # 1️⃣ Checar código
+  # ======================
+  - task: Checkout@1
+    displayName: 'Obter código do repositório'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  # ======================
+  # 2️⃣ Configurar Docker
+  # ======================
+  - task: DockerInstaller@0
+    inputs:
+      dockerVersion: 'latest'
+    displayName: 'Instalar Docker'
+
+  # ======================
+  # 3️⃣ Etapa de Build (CI)
+  # ======================
+  - script: |
+      echo "🚧 Iniciando build e testes..."
+      chmod +x ./build.sh
+      ./build.sh
+    displayName: 'Executar build da imagem e testes (CI)'
+
+  # ======================
+  # 4️⃣ Publicar artefato do build
+  # ======================
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+    displayName: 'Publicar artefatos de build'
+
+  # ======================
+  # 5️⃣ Etapa de Deploy (CD)
+  # ======================
+  - script: |
+      echo "🚀 Fazendo deploy da aplicação..."
+      chmod +x ./deploy.sh
+      ./deploy.sh
+    displayName: 'Executar deploy automático (CD)'
