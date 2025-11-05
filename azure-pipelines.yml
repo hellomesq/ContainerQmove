@@ -15,12 +15,6 @@ steps:
   - checkout: self
     displayName: 'Checkout do repositório'
 
-
-  - task: DockerInstaller@0
-    inputs:
-      dockerVersion: 'latest'
-    displayName: 'Instalar Docker'
-
   - script: |
       chmod +x ./build.sh
       ./build.sh
