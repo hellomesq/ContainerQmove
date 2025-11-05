@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Heloisa\\ContainerQmove\\MotoMonitoramento.csproj": {}
+    "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Heloisa\\ContainerQmove\\MotoMonitoramento.csproj": {
+    "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Heloisa\\ContainerQmove\\MotoMonitoramento.csproj",
+        "projectUniqueName": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj",
         "projectName": "MotoMonitoramento",
-        "projectPath": "C:\\Users\\Heloisa\\ContainerQmove\\MotoMonitoramento.csproj",
+        "projectPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\MotoMonitoramento.csproj",
         "packagesPath": "C:\\Users\\Heloisa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Heloisa\\ContainerQmove\\obj\\",
+        "outputPath": "C:\\Users\\Heloisa\\Downloads\\Faculdade\\Challenge\\ContainerQmove\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Heloisa\\AppData\\Roaming\\NuGet\\NuGet.Config"

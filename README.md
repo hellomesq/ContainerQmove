@@ -12,7 +12,7 @@ Este projeto utiliza Azure Container Registry (ACR) e Azure Container Instance (
 
 A gestão de frotas de motos em pátios de múltiplas filiais é um desafio operacional crítico enfrentado pela Mottu. Atualmente, o controle das motos é realizado majoritariamente de forma manual, gerando imprecisões, dificultando o acompanhamento em tempo real e impactando diretamente a eficiência das operações.
 
-A solução implementada utiliza **QR Codes únicos em cada moto** e um **aplicativo móvel** para leitura e atualização dos dados da frota em tempo real. Isso permite:
+A solução implementada utiliza **QR Codes únicos em cada moto** e um **aplicativo** para leitura e atualização dos dados da frota em tempo real. Isso permite:
 
 - **Rastreabilidade e controle preciso da frota**, com informações de placa, modelo e localização da moto.  
 - **Monitoramento em tempo real** do estado das motos, como “Disponível”, “Em Manutenção” ou “Pendências”.  
