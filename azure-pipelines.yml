@@ -12,8 +12,9 @@ variables:
   DB_DATABASE: $(DB_DATABASE)
 
 steps:
-  - task: Checkout@1
+  - checkout: self
     displayName: 'Checkout do repositório'
+
 
   - task: DockerInstaller@0
     inputs:
