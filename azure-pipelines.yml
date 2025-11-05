@@ -8,19 +8,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  RG: 'rgqmove'
-  ACR_NAME: 'acrqmove'
-  APP_NAME: 'aci-qmove-api'
-  DB_NAME: 'aci-qmove-db'
-  LOCATION: 'eastus'
-  IMAGE_NAME: 'qmoveapi:v1'
-
   MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
   DB_DATABASE: $(DB_DATABASE)
 
 steps:
   - task: Checkout@1
-    displayName: 'Obter código do repositório'
+    displayName: 'Checkout do repositório'
 
   - task: DockerInstaller@0
     inputs:
@@ -28,65 +21,16 @@ steps:
     displayName: 'Instalar Docker'
 
   - script: |
-      echo "🚧 Iniciando build e testes..."
       chmod +x ./build.sh
       ./build.sh
-    displayName: 'Executar build da imagem e testes (CI)'
+    displayName: 'Executar build da imagem Docker'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-    displayName: 'Publicar artefatos de build'
-
-  # ======================
-  # 5️⃣ Deploy via Azure CLI
-  # ======================
   - task: AzureCLI@2
     inputs:
-      azureSubscription: 'qmove-azure-connection' # <- Service Connection ARM
+      azureSubscription: 'qmove-azure-connection'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        echo "🔹 Criando Resource Group..."
-        az group create --name $(RG) --location $(LOCATION)
-
-        echo "🔹 Criando/verificando ACR..."
-        az acr show -n $(ACR_NAME) -g $(RG) &> /dev/null || az acr create -n $(ACR_NAME) -g $(RG) --sku Basic --admin-enabled true
-
-        echo "🔹 Login no ACR..."
-        az acr login --name $(ACR_NAME)
-
-        echo "🔹 Build e push da imagem..."
-        docker build -t $(ACR_NAME).azurecr.io/$(IMAGE_NAME) .
-        docker push $(ACR_NAME).azurecr.io/$(IMAGE_NAME)
-
-        echo "🔹 Criando container MySQL..."
-        DB_EXISTS=$(az container show --resource-group $(RG) --name $(DB_NAME) --query "name" -o tsv 2>/dev/null)
-        if [ -z "$DB_EXISTS" ]; then
-          az container create \
-            --resource-group $(RG) \
-            --name $(DB_NAME) \
-            --image $(ACR_NAME).azurecr.io/mysql:8 \
-            --registry-login-server $(ACR_NAME).azurecr.io \
-            --registry-username $(az acr credential show -n $(ACR_NAME) --query "username" -o tsv) \
-            --registry-password $(az acr credential show -n $(ACR_NAME) --query "passwords[0].value" -o tsv) \
-            --environment-variables MYSQL_ROOT_PASSWORD=$(MYSQL_ROOT_PASSWORD) MYSQL_DATABASE=$(DB_DATABASE) \
-            --cpu 1 --memory 1 --ports 3306 --os-type Linux --dns-name-label $(DB_NAME) --restart-policy Always
-        fi
-
-        echo "🔹 Criando container da aplicação..."
-        DB_FQDN=$(az container show --resource-group $(RG) --name $(DB_NAME) --query "ipAddress.fqdn" -o tsv)
-        az container create \
-          --resource-group $(RG) \
-          --name $(APP_NAME) \
-          --image $(ACR_NAME).azurecr.io/$(IMAGE_NAME) \
-          --registry-login-server $(ACR_NAME).azurecr.io \
-          --registry-username $(az acr credential show -n $(ACR_NAME) --query "username" -o tsv) \
-          --registry-password $(az acr credential show -n $(ACR_NAME) --query "passwords[0].value" -o tsv) \
-          --cpu 1 --memory 1 --os-type Linux --ports 8080 \
-          --environment-variables DB_HOST=$DB_FQDN DB_PORT=3306 DB_NAME=$(DB_DATABASE) DB_USER=root DB_PASS=$(MYSQL_ROOT_PASSWORD) PORT=8080 \
-          --dns-name-label $(APP_NAME) --restart-policy Always
-
-        echo "✅ Deploy concluído!"
-        echo "🌍 API disponível em: http://$(APP_NAME).$(LOCATION).azurecontainer.io"
+        chmod +x ./deploy.sh
+        ./deploy.sh
+    displayName: 'Executar deploy via Azure CLI'
