@@ -7,10 +7,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  MYSQL_ROOT_PASSWORD: $(MYSQL_ROOT_PASSWORD)
-  DB_DATABASE: $(DB_DATABASE)
-
 steps:
   - checkout: self
     displayName: 'Checkout do repositório'
